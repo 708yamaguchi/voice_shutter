@@ -1,7 +1,9 @@
-voice_shutter
+Voice Shutter
 =============
 
 Photography by voice registration. You can use this application from both PC and smartphone.
+
+Voice Shutter: https://708yamaguchi.github.io/voice_shutter/
 
 # Usage
 1. Press the "スタート" button to begin the program.
