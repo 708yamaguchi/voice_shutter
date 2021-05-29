@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+
+  <meta charset="UTF-8">
+  <div class="background">
+  <title>Voice Shutter</title>
+  <style>
+  canvas, video{
+    border: 1px solid gray;
+  }
+  </style>
+  <br>
+  <h1 id="title">Voice Shutter<br>-音声登録による写真撮影-</h1>
+  <br>
+  </div>
+  <script
+    src="https://code.jquery.com/jquery-3.2.1.js">
+  </script>
+</head>
+
+
+<body>
+  <p>
+    <div class="raw_string" id="state" style="margin-bottom:10px">
+      スタートを押して開始してください。
+    </div>
+  </p>
+
+<form>
+  <button class="button1" type="button" style="width:100px;height:50px" id="start">スタート</button>
+  <button class="button1" type="button" style="width:100px;height:50px" id="record">音声登録</button>
+  <button class="button1" type="button" style="width:100px;height:50px" id="stop">ストップ</button>
+</form>
+
+<p>
+  <div style="margin-bottom:10px"></div>
+</p>
+
+<canvas id="sound_analizer" width="600" height="300"></canvas>
+<div class="raw_string" style="margin-bottom:10px; width=90%">
+  黒線：現在の音声スペクトル&nbsp;&nbsp;&nbsp;&nbsp;赤線：録音された音声スペクトル
+</div>
+<br>
+<video id="camera" width="300" autoplay muted playsinline></video>
+<canvas id="camera_raw" width="300"></canvas>
+<br>
+<canvas id="camera_mono" width="300"></canvas>
+<canvas id="camera_kp" width="300"></canvas>
+<div class="raw_string" style="margin-bottom:10px">
+  左上：カメラ映像&nbsp;&nbsp;&nbsp;&nbsp;右上：カメラ画像&nbsp;&nbsp;&nbsp;&nbsp;
+  左下：白黒画像&nbsp;&nbsp;&nbsp;&nbsp;右下：ORB特徴量
+</div>
+
+<!-- Black out screen -->
+<script type="text/javascript" src="js/glayer.js"></script>
+<link rel="stylesheet" href="css/glayer.css" type="text/css" />
+<!-- Long press -->
+<!-- https://github.com/vaidik/jquery-longpress -->
+<script type="text/javascript" src="js/jquery.longpress.js"></script>
+<!-- Trianglify -->
+<!-- http://qrohlf.com/trianglify/ -->
+<!-- https://cdnjs.cloudflare.com/ajax/libs/trianglify/0.4.0/trianglify.min.js -->
+<script src="js/trianglify.min.js"></script>
+<script src="js/trianglify.js"></script>
+<!-- Background size -->
+<link rel="stylesheet" href="css/background.css" type="text/css" />
+<!-- Opencv -->
+<script src="https://docs.opencv.org/4.2.0/opencv.js"></script>
+
+<!-- My scripts -->
+<script src="js/resize_canvas.js"></script>
+<script src="js/camera.js"></script>
+<script src="js/sound_analyze.js"></script>
+<link rel="stylesheet" href="css/font.css" type="text/css" />
+<script src="js/sound_analyze.js"></script>
+
+</body>
+</html>
