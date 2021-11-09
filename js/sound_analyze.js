@@ -8,6 +8,8 @@ var streaming = false;
 var mel_spectrums = false;
 var recorded_mel_spectrums = false;
 var last_shutter = Date.now();
+var state = "init";
+var lang = false;
 
 // キャンバス
 var canvas = document.getElementById('sound_analizer');
@@ -260,22 +262,50 @@ var endStreaming = function() {
     })
 };
 
-var change_state = function(state) {
-    if (state == "start") {
-        let state = document.querySelector("#state");
-        state.textContent = "写真を取るトリガーとして登録したい音声を発しながら、音声登録ボタンを押してください。";
+var set_state = function(arg_state) {
+  state = arg_state;
+}
+
+var change_content = function() {
+    console.log(state);
+    console.log(lang);
+    if (state == "init") {
+    }
+    else if (state == "start") {
+        let state_id = document.querySelector("#state");
+        if (lang == "ja") {
+            state_id.textContent = "写真を取るトリガーとして登録したい音声を発しながら、音声登録ボタンを押してください。";
+        }
+        else if (lang == "en") {
+            state_id.textContent = "Press 'Register' button while speaking the voice you want to register as a trigger to take a photo";
+        }
     }
     else if (state == "record") {
-        let state = document.querySelector("#state");
-        state.textContent = "登録した音声が聞こえたら写真を撮ります。長押しで写真を保存できます。";
+        let state_id = document.querySelector("#state");
+        if (lang == "ja") {
+            state_id.textContent = "登録した音声が聞こえたら写真を撮ります。写真は右クリックor長押しで保存できます。";
+        }
+        else if (lang == "en") {
+            state_id.textContent = "Take a photo when the registered voice is recognized. Right click or press and hold the photo to save the photo.";
+        }
     }
     else if (state == "stop") {
-        let state = document.querySelector("#state");
-        state.textContent = "スタートを押して開始してください。";
+        let state_id = document.querySelector("#state");
+        if (lang == "ja") {
+            state_id.textContent = "「スタート」ボタンを押して開始してください。";
+        }
+        else if (lang == "en") {
+            state_id.textContent = "Press 'Start' button to start.";
+        }
     }
     else {
-        let state = document.querySelector("#state");
-        state.textContent = "エラーが発生したので、ページをリロードしてください。";
+        let state_id = document.querySelector("#state");
+        if (lang == "ja") {
+            state_id.textContent = "エラーが発生したので、ページをリロードしてください。";
+        }
+        else if (lang == "en") {
+            state_id.textContent = "Error has occurred, please reload the page.";
+        }
     }
 }
 
@@ -285,6 +315,28 @@ function reflesh_page () {
     // Colorize webpage background
     let background = document.querySelector(".background");
     addTriangleTo(background, background.scrollWidth, background.scrollHeight);
+}
+
+ // =========================================================
+ //      選択された言語のみ表示
+ // =========================================================
+function langSet(argLang){
+
+  // --- 切り替え対象のclass一覧を取得 ----------------------
+  var elm = document.getElementsByClassName("langCng");
+
+  for (var i = 0; i < elm.length; i++) {
+
+    // --- 選択された言語と一致は表示、その他は非表示 -------
+    if(elm[i].getAttribute("lang") == argLang){
+      elm[i].style.display = '';
+    }
+    else{
+      elm[i].style.display = 'none';
+    }
+  }
+
+  lang = argLang;
 }
 
 // Main code
@@ -308,7 +360,12 @@ window.onload = () => {
     const ids = ["start", "record", "stop"];
     for (let i = 0; i < ids.length; i++) {
         document.querySelector("#" + ids[i]).addEventListener("click", () => {
-            change_state(ids[i]);
+            set_state(ids[i]);
+            change_content();
         }, false);
     }
+
+    // --- ブラウザのデフォルト言語を取得して初回の表示 -----
+    lang = (navigator.browserLanguage || navigator.language || navigator.userLanguage).substr(0,2);
+    langSet(lang);
 };

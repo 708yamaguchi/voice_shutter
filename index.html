@@ -1,63 +1,123 @@
 <!DOCTYPE html>
 
 <html>
-<head>
+  <head>
 
-  <meta charset="UTF-8">
-  <div class="background">
-  <title>Voice Shutter</title>
-  <style>
-  canvas, video{
-    border: 1px solid gray;
-  }
-  </style>
-  <br>
-  <h1 id="title">Voice Shutter<br>-音声登録による写真撮影-</h1>
-  <br>
-  </div>
-  <script
-    src="https://code.jquery.com/jquery-3.2.1.js">
-  </script>
-</head>
-
-
-<body>
-  <p>
-    <div class="raw_string" id="state" style="margin-bottom:10px">
-      スタートを押して開始してください。
+    <meta charset="UTF-8">
+    <div class="background">
+      <title>Voice Shutter</title>
+      <style>
+        canvas, video{
+        border: 1px solid gray;
+        }
+      </style>
+      <br>
+      <h1 id="title">Voice Shutter<br>-音声登録による写真撮影-</h1>
+      <br>
     </div>
-  </p>
+    <script
+      src="https://code.jquery.com/jquery-3.2.1.js">
+    </script>
+  </head>
 
-<form>
-  <button class="button1" type="button" style="width:100px;height:50px" id="start">スタート</button>
-  <button class="button1" type="button" style="width:100px;height:50px" id="record">音声登録</button>
-  <button class="button1" type="button" style="width:100px;height:50px" id="stop">ストップ</button>
-</form>
 
-<p>
-  <div style="margin-bottom:10px"></div>
-</p>
+  <body>
+    <div id="sample1">
+      <input type="radio" name="langKbn" id="sJa" style="display: none;" onClick="langSet('ja'); change_content();" checked>
+      <label for="sJa">
+        <span class="langCng" lang="ja">日本語</span>
+        <span class="langCng" lang="en">日本語</span>
+      </label>
+      <input type="radio" name="langKbn" id="sEn" style="display: none;" onClick="langSet('en'); change_content();">
+      <label for="sEn">
+        <span class="langCng" lang="ja">English</span>
+        <span class="langCng" lang="en">English</span>
+      </label>
+    </div>
 
-<canvas id="sound_analizer" width="600" height="300"></canvas>
-<div class="raw_string" style="margin-bottom:10px; width=90%">
-  黒線：現在の音声スペクトル&nbsp;&nbsp;&nbsp;&nbsp;赤線：録音された音声スペクトル
+    <p>
+      <div class="raw_string" id="state" style="margin-bottom:10px">
+        <p class="langCng" lang="ja">
+          「スタート」ボタンを押して開始してください。
+        </p>
+        <p class="langCng" lang="en">
+          Press "Start" button to start.
+        </p>
+      </div>
+    </p>
+
+    <form>
+      <button class="button1" type="button" style="width:100px;height:50px" id="start">
+        <div class="langCng" lang="ja">
+          スタート
+        </div>
+        <div class="langCng" lang="en">
+          Start
+        </div>
+      </button>
+      <button class="button1" type="button" style="width:100px;height:50px" id="record">
+        <div class="langCng" lang="ja">
+          音声登録
+        </div>
+        <div class="langCng" lang="en">
+          Register
+        </div>
+      </button>
+      <button class="button1" type="button" style="width:100px;height:50px" id="stop">
+        <div class="langCng" lang="ja">
+          ストップ
+        </div>
+        <div class="langCng" lang="en">
+          Stop
+        </div>
+      </button>
+    </form>
+
+    <p>
+      <div style="margin-bottom:10px"></div>
+    </p>
+
+    <canvas id="sound_analizer" width="600" height="300"></canvas>
+    <div class="raw_string" style="margin-bottom:10px; width=90%">
+      <div class="langCng" lang="ja">
+        黒線：現在の音声スペクトル&nbsp;&nbsp;&nbsp;&nbsp;赤線：録音された音声スペクトル
+      </div>
+      <div class="langCng" lang="en">
+        Black line：Current voice spectrum&nbsp;&nbsp;&nbsp;&nbsp;Red line：Recorded voice spectrum
+      </div>
+    </div>
+    <br>
+    <video id="camera" width="300" autoplay muted playsinline></video>
+    <canvas id="camera_raw" width="300"></canvas>
+    <br>
+    <canvas id="camera_mono" width="300"></canvas>
+    <canvas id="camera_kp" width="300"></canvas>
+    <div class="raw_string" style="margin-bottom:10px">
+      <div class="langCng" lang="ja">
+        左上：カメラ映像&nbsp;&nbsp;&nbsp;&nbsp;右上：カメラ画像&nbsp;&nbsp;&nbsp;&nbsp;
+        左下：白黒画像&nbsp;&nbsp;&nbsp;&nbsp;右下：ORB特徴量
+      </div>
+      <div class="langCng" lang="en">
+        Upper left: Camera stream&nbsp;&nbsp;&nbsp;&nbsp;Upper right: Captured image&nbsp;&nbsp;&nbsp;&nbsp;
+        Lower left: monochrome image&nbsp;&nbsp;&nbsp;&nbsp;Lower right: ORB feature
+      </div>
+    </div>
+
+    <p>
+      <a href="https://github.com/708yamaguchi/voice_shutter">
+        <div class="langCng" lang="ja">
+          GitHubソースコード
+        </div>
+        <div class="langCng" lang="en">
+          GitHub source code
+        </div>
+      </a>
+    </p>
+
 </div>
-<br>
-<video id="camera" width="300" autoplay muted playsinline></video>
-<canvas id="camera_raw" width="300"></canvas>
-<br>
-<canvas id="camera_mono" width="300"></canvas>
-<canvas id="camera_kp" width="300"></canvas>
-<div class="raw_string" style="margin-bottom:10px">
-  左上：カメラ映像&nbsp;&nbsp;&nbsp;&nbsp;右上：カメラ画像&nbsp;&nbsp;&nbsp;&nbsp;
-  左下：白黒画像&nbsp;&nbsp;&nbsp;&nbsp;右下：ORB特徴量
-</div>
 
-<p>
-    <a href="https://github.com/708yamaguchi/voice_shutter">GitHubソースコード</a>
-</p>
-
-
+<!-- Language switching -->
+<link rel="stylesheet" href="css/lang.css" type="text/css" />
 <!-- Black out screen -->
 <script type="text/javascript" src="js/glayer.js"></script>
 <link rel="stylesheet" href="css/glayer.css" type="text/css" />
