@@ -267,8 +267,6 @@ var set_state = function(arg_state) {
 }
 
 var change_content = function() {
-    console.log(state);
-    console.log(lang);
     if (state == "init") {
     }
     else if (state == "start") {
